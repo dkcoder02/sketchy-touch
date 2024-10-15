@@ -2,40 +2,35 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Pencil,
   Settings,
-  Layers,
-  Users,
-  Upload,
-  Menu,
-  Sun,
-  Moon,
   LogOut,
 } from "lucide-react";
-import { Button } from "@/components/ui/index";
+import { Button, Avatar, AvatarFallback, DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut } from "@/components/ui/index";
 import Link from "next/link";
 import { useAuthStore } from "@/store/Auth";
 import { useRouter } from "next/navigation";
+import { useDrawingStore } from "@/store/Canva";
+import toast from "react-hot-toast";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { session } = useAuthStore();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [darkMode, setDarkMode] = useState(true);
+  const { session, user, logout } = useAuthStore();
+  const { storeDrawings } = useDrawingStore()
   const router = useRouter();
 
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+  const onLogout = async () => {
+    await logout();
+    await storeDrawings(null);
+    toast.success("You have been successfully logout")
+    router.push("/");
+  };
 
-    return () => {};
-  }, [darkMode]);
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+  }, []);
 
   useEffect(() => {
     if (!session) {
-      router.push("/");
+      router.push("/sign-in");
     }
   }, [session, router]);
 
@@ -43,105 +38,53 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     return null;
   }
 
-  // const currentUser = async () => {
-  //   await getCurrentUser();
-  // };
-
-  // useEffect(() => {
-  //   currentUser();
-  // });
   return (
     <main className="flex-grow bg-base-300">
       <div className="flex h-screen bg-background dark:bg-gray-900 transition-colors duration-200">
-        {/* Sidebar */}
-        <div
-          className={`${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } fixed inset-y-0 left-0 z-50 w-64 bg-card dark:bg-gray-800 shadow-lg transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0`}
-        >
-          <div className="flex h-full flex-col">
-            <div className="flex items-center justify-between px-4 py-6">
-              <span className="text-2xl font-bold dark:text-white">
-                Sketchy Board
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setSidebarOpen(false)}
-                className="lg:hidden"
-              >
-                <Menu className="h-6 w-6" />
-              </Button>
-            </div>
-            <nav className="flex-1 space-y-2 px-2">
-              <Link href="/workspace">
-                <Button variant="ghost" className="w-full justify-start">
-                  <Pencil className="mr-2 h-4 w-4" />
-                  My Workspace
-                </Button>
-              </Link>
-              <Button variant="ghost" className="w-full justify-start">
-                <Layers className="mr-2 h-4 w-4" />
-                Templates
-              </Button>
-              <Button variant="ghost" className="w-full justify-start">
-                <Users className="mr-2 h-4 w-4" />
-                Collaborate
-              </Button>
-              <Link href="/settings">
-                <Button variant="ghost" className="w-full justify-start">
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
-                </Button>
-              </Link>
-            </nav>
-            <div className="p-4">
-              <Button className="w-full">
-                <LogOut className="mr-2 h-4 w-4" />
-                Logout
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Main content */}
         <div className="flex-1 overflow-auto">
           <header className="bg-card dark:bg-gray-800 shadow">
             <div className="flex items-center justify-between px-4 py-6">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden"
-              >
-                <Menu className="h-6 w-6" />
-              </Button>
-              <h1 className="text-2xl font-bold dark:text-white">
-                My Workspace
-              </h1>
+              <Link href="/workspace">
+                <h1 className="text-2xl cursor-pointer font-bold text-gray-400">
+                  Sketchy Board
+                </h1>
+              </Link>
               <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setDarkMode(!darkMode)}
-                >
-                  {darkMode ? (
-                    <Sun className="h-4 w-4" />
-                  ) : (
-                    <Moon className="h-4 w-4" />
-                  )}
-                  <span className="ml-2 sr-only">
-                    {darkMode ? "Light Mode" : "Dark Mode"}
-                  </span>
-                </Button>
-                <Button variant="outline">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Share
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="relative h-10 w-10 rounded-full">
+                      <Avatar className="h-10 w-10">
+                        <AvatarFallback className="bg-orange-500 text-white">{user?.name}</AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56 bg-gray-700 text-white" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">{user?.name}</p>
+                        <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <Link href="/settings">
+                        <DropdownMenuItem>
+                          <Settings className="mr-2 h-4 w-4" />
+                          <span>Settings</span>
+                        </DropdownMenuItem>
+                      </Link>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={onLogout}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </header>
-
-          <main className="p-6">{children}</main>
+          <main className="p-0">{children}</main>
         </div>
       </div>
     </main>

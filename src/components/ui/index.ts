@@ -16,14 +16,10 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import GradualSpacing from "./gradual-spacing";
 import HyperText from "./hyper-text";
 import { Input } from "./input";
 import { Label } from "./label";
-import { MagicCard } from "./magic-card";
-import PulsatingButton from "./pulsating-button";
 import ShimmerButton from "./shimmer-button";
-import ShineBorder from "./shine-border";
 import { Toast } from "./toast";
 import { Toaster } from "./toaster";
 import TypingAnimation from "./typing-animation";
@@ -41,6 +37,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut } from "./dropdown-menu";
+import { Avatar, AvatarFallback } from "./avatar";
 export {
   Button,
   Input,
@@ -52,13 +50,9 @@ export {
   AnimatedSubscribeButton,
   AnimatedGridPattern,
   GridPattern,
-  PulsatingButton,
   Card,
-  MagicCard,
   ShimmerButton,
-  GradualSpacing,
   TypingAnimation,
-  ShineBorder,
   Form,
   FormControl,
   FormField,
@@ -82,4 +76,6 @@ export {
   TabsContent,
   TabsList,
   TabsTrigger,
+  Avatar, AvatarFallback,
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut
 };

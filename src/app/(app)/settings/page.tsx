@@ -32,22 +32,22 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/index";
-import { LogOut } from "lucide-react";
 import { changePasswordSchema, changeProfileSchema } from "@/schemas";
-import { useToast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/store/Auth";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useDrawingStore } from "@/store/Canva";
+import toast from "react-hot-toast";
 
 export default function SettingsPage() {
   const { user, logout, updateCurrentUser } = useAuthStore();
+  const { storeDrawings } = useDrawingStore()
   const [isProfileSubmitting, setIsProfileSubmitting] = useState(false);
   const [isUpdatePasswordSubmitting, setIsUpdatePasswordSubmitting] =
     useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const [username, setUsername] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
-  const { toast } = useToast();
   const router = useRouter();
   const profileForm = useForm<z.infer<typeof changeProfileSchema>>({
     resolver: zodResolver(changeProfileSchema),
@@ -79,24 +79,16 @@ export default function SettingsPage() {
         }
       );
       if (!response.data.success) {
-        toast({
-          title: "Profile update failed",
-          description: response.data.message,
-        });
+        toast.error(response.data.message || "Profile update failed")
         return;
       }
-
       const updateUserObj = {
         name: username,
         email: email,
       };
-
       await updateCurrentUser(updateUserObj);
 
-      toast({
-        title: "Profile updated",
-        description: response.data.message,
-      });
+      toast.success(response.data.message)
     } catch (error: any) {
       console.error("Error Profile update::", error);
     } finally {
@@ -117,17 +109,10 @@ export default function SettingsPage() {
         }
       );
       if (!response.data.success) {
-        toast({
-          title: "Change password failed",
-          description: response.data.message,
-        });
+        toast.error(response.data.message || "Change password failed")
         return;
       }
-
-      toast({
-        title: "Password updated",
-        description: response.data.message,
-      });
+      toast.success(response.data.message);
 
       passwordForm.reset();
     } catch (error: any) {
@@ -143,22 +128,12 @@ export default function SettingsPage() {
       const response = await axios.delete(
         `/api/user/delete-my-account/${user?.$id}`
       );
-      if (!response.data.success) {
-        toast({
-          title: "Delete account failed",
-          description: response.data.message,
-        });
-        return;
-      }
 
+      await storeDrawings(null);
       await logout();
 
-      toast({
-        title: "Account deleted",
-        description: response.data.message,
-      });
-
       router.push("/");
+      toast.success(response.data.message);
     } catch (error: any) {
       console.error("Error Delete account::", error);
     } finally {
@@ -166,25 +141,16 @@ export default function SettingsPage() {
     }
   };
 
-  const onLogout = async () => {
-    await logout();
-    toast({
-      title: "Logged out",
-      description: "You have been logged out",
-    });
-    router.push("/");
-  };
-
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-8">Account Settings</h1>
-      <Tabs defaultValue="profile" className="space-y-4">
-        <TabsList>
+    <div className="container mx-auto p-4 w-full max-w-2xl bg-gray-900">
+      <h1 className="text-3xl font-bold mb-8 text-center mt-6">Settings</h1>
+      <Tabs defaultValue="profile" className="space-y-4 text-4xl">
+        <TabsList className="text-white">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="account">Account</TabsTrigger>
         </TabsList>
         <TabsContent value="profile">
-          <Card>
+          <Card className="bg-gray-900 border-gray-900 ">
             <CardHeader>
               <CardTitle>Profile</CardTitle>
               <CardDescription>
@@ -224,7 +190,7 @@ export default function SettingsPage() {
                     )}
                   />
 
-                  <Button type="submit" disabled={isProfileSubmitting}>
+                  <Button type="submit" className="bg-orange-500 text-white hover:bg-orange-600" disabled={isProfileSubmitting}>
                     Update profile
                   </Button>
                 </form>
@@ -233,7 +199,7 @@ export default function SettingsPage() {
           </Card>
         </TabsContent>
         <TabsContent value="account">
-          <Card>
+          <Card className="bg-gray-900 border-gray-900">
             <CardHeader>
               <CardTitle>Account</CardTitle>
               <CardDescription>
@@ -280,39 +246,11 @@ export default function SettingsPage() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" disabled={isUpdatePasswordSubmitting}>
+                  <Button type="submit" className="bg-orange-500 text-white hover:bg-orange-600" disabled={isUpdatePasswordSubmitting}>
                     Change Password
                   </Button>
                 </form>
               </Form>
-              {/* <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-medium">
-                    Two-factor authentication
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Add an extra layer of security to your account
-                  </p>
-                </div>
-                <Button variant="outline">
-                  <Key className="mr-2 h-4 w-4" />
-                  Enable 2FA
-                </Button>
-              </div> */}
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-medium">
-                    Log out of all devices
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Log out of all other active sessions on other devices
-                  </p>
-                </div>
-                <Button variant="outline" onClick={onLogout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Log out of all devices
-                </Button>
-              </div>
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-medium">Delete Account</h3>
@@ -326,7 +264,7 @@ export default function SettingsPage() {
                       Delete Account
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent className="bg-gray-900 text-white">
                     <AlertDialogHeader>
                       <AlertDialogTitle>
                         Are you absolutely sure?
@@ -338,8 +276,8 @@ export default function SettingsPage() {
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={onDeleteAccount}>
+                      <AlertDialogCancel className="bg-green-600 hover:bg-green-700">Cancel</AlertDialogCancel>
+                      <AlertDialogAction className="bg-red-500 text-white hover:bg-red-600" onClick={onDeleteAccount}>
                         Delete Account
                       </AlertDialogAction>
                     </AlertDialogFooter>

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/store/Auth";
 import {
   Input,
@@ -18,11 +17,11 @@ import {
   FormMessage,
 } from "@/components/ui/index";
 import { signInSchema } from "@/schemas/signInSchema";
+import toast from "react-hot-toast";
 
 export default function SignInPage() {
   const { login, loginWithGithub } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm({
@@ -38,28 +37,15 @@ export default function SignInPage() {
     try {
       const { email, password } = data;
       const signInRes = await login(email.toString(), password.toString());
-      if (signInRes.error) {
-        toast({
-          title: "SignIn failed",
-          description: signInRes.error.message,
-          variant: "destructive",
-        });
+      if (signInRes?.error) {
+        toast.error(signInRes.error.message || 'Login failed')
         return;
       }
 
-      toast({
-        title: "SignIn successfully",
-        description: "Successfully signin user",
-      });
-
       router.push("/workspace");
+      toast.success('Login successfully')
     } catch (error: any) {
       console.error("Error login user::", error);
-      // toast({
-      //   title: "SignIn failed",
-      //   description: error.message || "Error login user",
-      //   variant: "destructive",
-      // });
     } finally {
       setIsSubmitting(false);
     }
@@ -68,26 +54,28 @@ export default function SignInPage() {
   return (
     <>
       <div>
-        <svg
-          className="mx-auto h-12 w-auto text-primary"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <Link href="/">
+          <svg
+            className="mx-auto h-12 w-auto text-[#ff7700]"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+        </Link>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-[#ff7700]">
           Sign in to Sketchy Board
         </h2>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 text-gray-300 space-y-6">
           <FormField
             name="email"
             control={form.control}
@@ -128,7 +116,7 @@ export default function SignInPage() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               Sign in
             </Button>
@@ -141,7 +129,7 @@ export default function SignInPage() {
             <div className="w-full border-t border-gray-300" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-gray-100 text-gray-500">
+            <span className="px-2 bg-gray-600 text-gray-300">
               Or continue with
             </span>
           </div>
@@ -182,7 +170,7 @@ export default function SignInPage() {
           <div>
             <Button
               variant="outline"
-              className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              className="w-full flex items-center justify-center px-4 py-2 border border-gray-900 shadow-sm text-sm font-medium rounded-md text-gray-400 bg-gray-800 hover:bg-gray-750"
               disabled={isSubmitting}
               onClick={async () => {
                 await loginWithGithub();
@@ -206,10 +194,10 @@ export default function SignInPage() {
         </div>
       </div>
       <div className="text-sm text-center mt-6">
-        <span className="text-gray-600">Don't have an account?</span>{" "}
+        <span className="text-gray-300">Don't have an account?</span>{" "}
         <Link
           href="/sign-up"
-          className="font-medium text-primary hover:text-primary/90"
+          className="font-medium text-[#ff7700] hover:underline"
         >
           Sign up here
         </Link>

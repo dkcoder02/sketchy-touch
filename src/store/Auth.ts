@@ -95,9 +95,7 @@ export const useAuthStore = create<IAuthStore>()(
             account.get(),
             account.createJWT(),
           ]);
-
           set({ session, user, jwt });
-
           return { success: true };
         } catch (error) {
           console.log("login => error", error);
@@ -159,8 +157,8 @@ export const useAuthStore = create<IAuthStore>()(
 
       async logout() {
         try {
-          await account.deleteSessions();
           set({ session: null, jwt: null, user: null });
+          await account.deleteSessions();
         } catch (error) {
           console.log(error);
         }

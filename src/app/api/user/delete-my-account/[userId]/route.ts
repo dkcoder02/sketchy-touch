@@ -1,5 +1,7 @@
-import { users } from "@/models/server/config";
+import { dbId, drawingsCollectionId } from "@/models/name";
+import { databases, users } from "@/models/server/config";
 import { NextResponse } from "next/server";
+import { Query } from "node-appwrite";
 
 export async function DELETE(
   request: Request,
@@ -19,6 +21,24 @@ export async function DELETE(
         {
           status: 404,
         }
+      );
+    }
+
+    const isExistUserDrawing = await databases.listDocuments(
+      dbId,
+      drawingsCollectionId,
+      [
+        Query.select(["$id", "owner", "drawings"]),
+        Query.equal("owner", userId),
+      ]
+    );
+
+    if(isExistUserDrawing.total !== 0){
+      const documentId = isExistUserDrawing.documents[0].$id;
+      await databases.deleteDocument(
+        dbId,
+        drawingsCollectionId,
+        documentId
       );
     }
 

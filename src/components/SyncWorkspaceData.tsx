@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/index";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 interface Props {
   workspaceData: string;
@@ -11,7 +11,6 @@ interface Props {
 }
 export default function SyncWorkspaceData(Props: Props) {
   const [isSyncing, setIsSyncing] = useState(false);
-  const { toast } = useToast();
   const handleSyncWorkspaceDataToBackend = async () => {
     try {
       setIsSyncing(true);
@@ -22,13 +21,12 @@ export default function SyncWorkspaceData(Props: Props) {
         drawings: workspaceData,
       });
 
-      if (response.data.success) {
-        toast({
-          title: "Syncing successful",
-          description: "Data synced successfully",
-          variant: "default",
-        });
+      if (!response.data.success) {
+        toast.error("Data synced failed");
+        return;
       }
+
+      toast.success("Data synced successfully");
     } catch (error) {
       console.log("Syncing failed", error);
     } finally {
@@ -40,7 +38,7 @@ export default function SyncWorkspaceData(Props: Props) {
       {isSyncing ? (
         <Button
           variant="outline"
-          className="w-full bg-gray-500 text-black"
+          className="w-full bg-orange-500 text-white"
           disabled={isSyncing}
         >
           Syncing...
@@ -48,10 +46,10 @@ export default function SyncWorkspaceData(Props: Props) {
       ) : (
         <Button
           variant="outline"
-          className="w-full bg-gray-500 text-black"
+          className="w-full bg-orange-500 text-white"
           onClick={handleSyncWorkspaceDataToBackend}
         >
-          Sync
+          Sync Data
         </Button>
       )}
     </div>

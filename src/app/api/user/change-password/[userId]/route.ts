@@ -1,6 +1,5 @@
 import { users } from "@/models/server/config";
 import { NextResponse } from "next/server";
-import * as argon2 from "argon2";
 
 export async function PATCH(
   request: Request,
@@ -36,10 +35,7 @@ export async function PATCH(
       );
     }
 
-    const hashedPassword = await argon2.hash(newPassword);
-
-    const isUpdatePassword = await users.updatePassword(userId, hashedPassword);
-
+    const isUpdatePassword = await users.updatePassword(userId, newPassword);
     return NextResponse.json(
       {
         message: "Password updated successfully",

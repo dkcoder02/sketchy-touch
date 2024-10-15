@@ -7,7 +7,6 @@ import {
   Pencil,
   Users,
   Zap,
-  Sparkles,
   Lightbulb,
   Facebook,
   Twitter,
@@ -15,42 +14,102 @@ import {
   Linkedin,
   ChevronRightIcon,
   CheckIcon,
+  UserPlus,
+  Share2,
+  Play,
+  PenTool,
+  GitBranch,
+  Palette,
 } from "lucide-react";
 import {
   Button,
   ShimmerButton,
   TypingAnimation,
-  PulsatingButton,
   HyperText,
-  MagicCard,
   AnimatedSubscribeButton,
   AnimatedGridPattern,
-  GridPattern,
+  Card,
+  CardHeader,
+  CardContent,
+  CardTitle,
+  CardDescription,
 } from "@/components/ui/index";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/Auth";
+import { useEffect } from "react";
+const features = [
+  { icon: Pencil, title: "Sketch Your Ideas", description: "Use our intuitive drawing tools to quickly sketch out your concepts and designs.", color: "bg-purple-500" },
+  { icon: Users, title: "Collaborate in Real-Time", description: "Work together with your team, no matter where they are located.", color: "bg-blue-500" },
+  { icon: Zap, title: "Animate Your Thoughts", description: "Bring your sketches to life with easy-to-use animation tools.", color: "bg-yellow-500" },
+  { icon: Lightbulb, title: "Inspire Creativity", description: "Unlock your team's creative potential with our collaborative environment.", color: "bg-green-500" },
+  { icon: Share2, title: "Easy Sharing", description: "Share your sketches and animations with clients or stakeholders effortlessly.", color: "bg-pink-500" },
+  { icon: Play, title: "Interactive Presentations", description: "Turn your sketches into engaging, interactive presentations.", color: "bg-red-500" },
+]
+const useCases = [
+  {
+    icon: Lightbulb,
+    title: "Brainstorming Sessions",
+    description: "Capture ideas quickly and collaboratively.",
+    color: "text-yellow-500",
+  },
+  {
+    icon: GitBranch,
+    title: "Project Planning",
+    description: "Visualize project timelines and dependencies.",
+    color: "text-blue-500",
+  },
+  {
+    icon: Pencil,
+    title: "Design Thinking Workshops",
+    description: "Guide your team through creative problem-solving.",
+    color: "text-purple-500",
+  },
+  {
+    icon: Users,
+    title: "Remote Team Meetings",
+    description: "Keep everyone engaged with interactive visuals.",
+    color: "text-green-500",
+  },
+]
+
 export default function Home() {
+
+  const { session } = useAuthStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      router.push("/workspace");
+    }
+  }, [session, router]);
+
+  if (session) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-[#f0f4f8] font-sans">
       {/* Navigation */}
-      <nav className="bg-white shadow-sm">
+      <nav className="sticky top-0 z-50 bg-gray-800 shadow-sm ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex p-4 justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <Pencil className="h-8 w-8 text-indigo-600" />
+                <Pencil className="h-8 w-8 text-[#ff7700]" />
                 <HyperText
-                  className="ml-2 text-xl font-bold text-gray-800"
+                  className="ml-2 text-xl font-bold text-[#ff7700]"
                   text="SketchyBoard"
                 />
               </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center space-x-4">
               <Link href="/sign-in">
-                <PulsatingButton pulseColor="indigo-600">
-                  Log in
-                </PulsatingButton>
+                <Button className="ml-4 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border shadow-sm h-9 px-4 py-2 bg-gray-100 text-gray-900 border-gray-100 hover:bg-gray-200 hover:text-gray-900 transition-colors">
+                  Login
+                </Button>
               </Link>
               <Link href="/sign-up">
-                <Button className="ml-4">Sign up</Button>
+                <Button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-white shadow h-9 px-4 py-2 bg-[#ff7700] hover:bg-[#ff7700]/90 transition-colors">Sign Up</Button>
               </Link>
             </div>
           </div>
@@ -58,17 +117,17 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <header className="bg-white">
-        <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+      <header className="">
+        <div className=" min-h-screen py-16 px-4 flex  items-center justify-center sm:py-24 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
           <div className="text-center">
             <motion.h1
-              className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl"
+              className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
               Collaborate with a{" "}
-              <span className="text-indigo-600">Sketchy</span> Touch
+              <span className="text-orange-500">Sketchy</span> Touch
             </motion.h1>
             <TypingAnimation
               className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl"
@@ -77,14 +136,16 @@ export default function Home() {
             />
             <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
               <div className="rounded-md shadow">
-                <Link href="/workspace">
+                <Link href="/sign-in">
                   <ShimmerButton
                     shimmerSize="0.18em"
                     shimmerDuration="2s"
+                    shimmerColor="#ff7700"
                     className="w-full"
+                    background="#ff7700"
                   >
                     <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
-                      Get Started
+                      Sign Up Now
                     </span>
                   </ShimmerButton>
                 </Link>
@@ -92,289 +153,97 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <AnimatedGridPattern
+          numSquares={30}
+          maxOpacity={0.1}
+          duration={3}
+          repeatDelay={1}
+          className={cn(
+            "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+            "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12"
+          )}
+        />
       </header>
 
-      {/* Animated Sketch Area */}
-      <div className="relative bg-gray-50 py-16 sm:py-24">
-        <div className="relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              className="relative bg-white shadow-xl rounded-2xl overflow-hidden"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-            >
-              <div className="absolute inset-0">
-                <svg
-                  className="h-full w-full"
-                  fill="none"
-                  viewBox="0 0 800 400"
-                >
-                  <motion.path
-                    d="M0,100 Q200,150 400,100 T800,100"
-                    stroke="#4F46E5"
-                    strokeWidth="2"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 2, ease: "easeInOut" }}
-                  />
-                  <motion.circle
-                    cx="400"
-                    cy="100"
-                    r="20"
-                    fill="#4F46E5"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 1.5, duration: 0.5 }}
-                  />
-                </svg>
-              </div>
-              <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
-                <h2 className="text-center text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                  Watch Your Ideas Come to Life
-                </h2>
-                <p className="mt-6 max-w-lg mx-auto text-center text-xl text-gray-500">
-                  Our unique animation system brings a playful, hand-drawn feel
-                  to your diagrams and sketches.
-                </p>
-              </div>
-              <GridPattern
-                width={20}
-                height={20}
-                x={-1}
-                y={-1}
-                className={cn(
-                  "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] "
-                )}
-              />
-            </motion.div>
-          </div>
-        </div>
-      </div>
-
       {/* Features */}
-      <div className="bg-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
-              Features
-            </h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Everything you need to sketch and collaborate
-            </p>
-          </div>
-
-          <div className="mt-10">
-            <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-              {[
-                {
-                  name: "Hand-drawn feel",
-                  description:
-                    "Create diagrams that look like they were sketched by hand, adding a personal touch to your ideas.",
-                  icon: Pencil,
-                },
-                {
-                  name: "Real-time collaboration",
-                  description:
-                    "Work together with your team in real-time, no matter where they are in the world.",
-                  icon: Users,
-                },
-                {
-                  name: "Fancy animations",
-                  description:
-                    "Bring your sketches to life with our built-in animation tools, making your presentations more engaging.",
-                  icon: Sparkles,
-                },
-                {
-                  name: "Lightning-fast performance",
-                  description:
-                    "Enjoy a smooth, responsive drawing experience thanks to our optimized rendering engine.",
-                  icon: Zap,
-                },
-              ].map((feature) => (
-                <div key={feature.name} className="relative">
-                  <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                      <feature.icon className="h-6 w-6" aria-hidden="true" />
-                    </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
-                      {feature.name}
-                    </p>
-                  </dt>
-                  <dd className="mt-2 ml-16 text-base text-gray-500">
-                    {feature.description}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-extrabold text-white text-center mb-12">Our <span className="text-orange-500">Features</span></h2>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, index) => (
+              <Card key={index} className="bg-gray-800 border-gray-700 hover:bg-gray-700 transition-colors duration-300">
+                <CardHeader>
+                  <div className={`w-16 h-16 rounded-full ${feature.color} flex items-center justify-center mb-4`}>
+                    <feature.icon className="w-6 h-6 text-primary-foreground" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-white">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </div>
 
       {/* How It Works */}
-      <div className="bg-gray-50 py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
-              How It Works
-            </h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Simplify your collaborative process
-            </p>
-          </div>
-          <div className="mt-10">
-            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-              {[
-                {
-                  step: 1,
-                  title: "Create a board",
-                  description:
-                    "Start with a blank canvas or choose from our templates.",
-                },
-                {
-                  step: 2,
-                  title: "Invite your team",
-                  description: "Share your board and collaborate in real-time.",
-                },
-                {
-                  step: 3,
-                  title: "Sketch and animate",
-                  description:
-                    "Bring your ideas to life with our intuitive tools.",
-                },
-              ].map((item) => (
-                <div key={item.step} className="relative">
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                    {item.step}
+      <div className="bg-gray-950 py-16 sm:py-24">
+        <section className="mb-24">
+          <h2 className="text-center text-sm font-semibold text-white uppercase tracking-wide mb-2">HOW IT WORKS</h2>
+          <h3 className="text-center text-4xl font-bold mb-12 text-gray-400 ">Simplify your collaborative process</h3>
+          <div className="grid md:grid-cols-3   gap-8 m-8">
+            {[
+              { number: 1, title: "Create a board", description: "Start with a blank canvas or choose from our templates.", icon: PenTool },
+              { number: 2, title: "Invite your team", description: "Share your board and collaborate in real-time.", icon: Users },
+              { number: 3, title: "Sketch and animate", description: "Bring your ideas to life with our intuitive tools.", icon: Zap },
+            ].map((step, index) => (
+              <Card key={index} className="bg-gray-900 border-gray-800 relative overflow-hidden group hover:shadow-lg transition-all duration-300">
+                <div className="absolute top-0 left-0 w-1 h-full bg-orange-500 transform origin-left scale-y-0 group-hover:scale-y-100 transition-transform duration-300"></div>
+                <CardHeader>
+                  <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mb-4 group-hover:bg-orange-400 group-hover:text-primary-foreground transition-colors duration-300">
+                    <span className="text-2xl font-bold">{step.number}</span>
                   </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
-                    {item.title}
-                  </p>
-                  <p className="mt-2 ml-16 text-base text-gray-500">
-                    {item.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+                  <CardTitle className="text-white text-2xl">{step.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="text-gray-400">
+                  <CardDescription className="text-2xl">{step.description}</CardDescription>
+                  <step.icon className="mt-4 transition-colors duration-300" size={30} />
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        </div>
+        </section>
       </div>
 
       {/* Use Cases */}
-      <div className="bg-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
-              Use Cases
-            </h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+      <div className="bg-gray-900 text-gray-100 py-16 sm:py-24">
+        <section className="py-16">
+          <div className="container mx-auto px-6">
+            <h2 className="text-center text-4xl sm:text-4xl font-extrabold text-orange-400 mb-12">
               Perfect for teams of all sizes
-            </p>
-          </div>
-          <div className="mt-10">
-            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-              {[
-                {
-                  title: "Brainstorming Sessions",
-                  description: "Capture ideas quickly and collaboratively.",
-                },
-                {
-                  title: "Project Planning",
-                  description: "Visualize project timelines and dependencies.",
-                },
-                {
-                  title: "Design Thinking Workshops",
-                  description:
-                    "Guide your team through creative problem-solving.",
-                },
-                {
-                  title: "Remote Team Meetings",
-                  description:
-                    "Keep everyone engaged with interactive visuals.",
-                },
-              ].map((item) => (
-                <div key={item.title} className="relative">
-                  <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                      <Lightbulb className="h-6 w-6" aria-hidden="true" />
-                    </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
-                      {item.title}
-                    </p>
-                  </dt>
-                  <dd className="mt-2 ml-16 text-base text-gray-500">
-                    {item.description}
-                  </dd>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Testimonials */}
-      <div className="bg-gray-50 py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
-              Testimonials
             </h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Loved by teams worldwide
-            </p>
-          </div>
-          <div className="mt-10">
-            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-              {[
-                {
-                  name: "Sarah J.",
-                  role: "Product Manager",
-                  quote:
-                    "SketchyBoard has revolutionized our brainstorming sessions. The hand-drawn feel adds a personal touch to our ideas.",
-                },
-                {
-                  name: "Mike T.",
-                  role: "UX Designer",
-                  quote:
-                    "The animation features in SketchyBoard allow me to bring my design concepts to life in ways I never thought possible.",
-                },
-              ].map((testimonial) => (
-                <MagicCard
-                  key={testimonial.name}
-                  className="cursor-pointer bg-white shadow overflow-hidden sm:rounded-lg"
-                  gradientColor="#D9D9D955"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {useCases.map((feature, index) => (
+                <Card
+                  key={index}
+                  className="bg-gray-800 border-gray-700 flex flex-col justify-center items-center"
                 >
-                  <div className="px-4 py-5 sm:p-6">
-                    <p className="text-base text-gray-500 italic">
-                      "{testimonial.quote}"
-                    </p>
-                    <div className="mt-4">
-                      <p className="text-sm font-medium text-gray-900">
-                        {testimonial.name}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {testimonial.role}
-                      </p>
+                  <CardHeader className="flex flex-row items-center space-x-2 justify-left">
+                    <div className={`p-2 rounded-full ${feature.color} bg-opacity-20`}>
+                      <feature.icon className={`h-6 w-6 ${feature.color}`} />
                     </div>
-                  </div>
-                </MagicCard>
+                    <CardTitle className="text-white">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <p className="text-gray-400">{feature.description}</p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
-        </div>
+        </section>
       </div>
-
-      <AnimatedGridPattern
-        numSquares={30}
-        maxOpacity={0.1}
-        duration={3}
-        repeatDelay={1}
-        className={cn(
-          "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-          "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12"
-        )}
-      />
 
       {/* Footer */}
       <footer className="bg-gray-800">
@@ -485,7 +354,7 @@ export default function Home() {
                 />
                 <div className="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
                   <AnimatedSubscribeButton
-                    buttonColor="#000000"
+                    buttonColor="#ff7700"
                     buttonTextColor="#ffffff"
                     subscribeStatus={false}
                     initialText={
@@ -523,8 +392,8 @@ export default function Home() {
                 </a>
               ))}
             </div>
-            <p className="mt-8 text-base text-gray-400 md:mt-0 md:order-1">
-              &copy; 2023 SketchyBoard, Inc. All rights reserved.
+            <p className="mt-8 text-base text-[#ff7700] md:mt-0 md:order-1">
+              &copy; 2024 SketchyBoard, Inc. All rights reserved.
             </p>
           </div>
         </div>
