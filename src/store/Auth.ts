@@ -22,7 +22,7 @@ interface IAuthStore {
     success: boolean;
     error?: AppwriteException | null;
   }>;
-  loginWithGithub(): Promise<{
+  oAuth2Login(provider: string): Promise<{
     success: boolean;
     error?: AppwriteException | null;
   }>;
@@ -131,14 +131,30 @@ export const useAuthStore = create<IAuthStore>()(
           };
         }
       },
-      async loginWithGithub() {
+      async oAuth2Login(provider: string) {
         try {
-          await account.createOAuth2Session(
-            OAuthProvider.Github,
-            "http://localhost:3000/workspace",
-            "http://localhost:3000/error",
-            ["user"]
-          );
+          const oAuth2Options = {
+            success: "http://localhost:3000/workspace",
+            error: "http://localhost:3000/error",
+            data: ["user"]
+          }
+          if (provider === "Google") {
+            await account.createOAuth2Session(
+              OAuthProvider.Google,
+              oAuth2Options.success,
+              oAuth2Options.error,
+              oAuth2Options.data
+            );
+          }
+
+          if (provider === "Github") {
+            await account.createOAuth2Session(
+              OAuthProvider.Github,
+              oAuth2Options.success,
+              oAuth2Options.error,
+              oAuth2Options.data
+            );
+          }
           const session = await account.getSession("current");
 
           const [user] = await Promise.all([account.get()]);

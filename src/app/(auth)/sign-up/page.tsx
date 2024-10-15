@@ -24,7 +24,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 import toast from "react-hot-toast";
 
 export default function SignUpPage() {
-  const { login, createAccount, loginWithGithub } = useAuthStore();
+  const { login, createAccount, oAuth2Login } = useAuthStore();
   const [username, setUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isUsernameChecking, setIsUsernameChecking] = useState(false);
@@ -71,7 +71,7 @@ export default function SignUpPage() {
         password.toString()
       );
       if (signUpRes.error) {
-        toast.error( signUpRes.error?.type === "user_already_exists"
+        toast.error(signUpRes.error?.type === "user_already_exists"
           ? "User already exists with this email or username"
           : "Something went to wrong while sign up")
         return;
@@ -81,7 +81,7 @@ export default function SignUpPage() {
           toast.error(signInRes.error!.message || "Automatic login failed")
         }
       }
-      
+
       router.push("/workspace");
       toast.success("Sign up successfully");
     } catch (error: any) {
@@ -214,6 +214,9 @@ export default function SignUpPage() {
               variant="outline"
               className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               disabled={isSubmitting}
+              onClick={async () => {
+                await oAuth2Login("Google");
+              }}
             >
               <svg
                 className="h-5 w-5 mr-2"
@@ -247,7 +250,7 @@ export default function SignUpPage() {
               className="w-full flex items-center justify-center px-4 py-2 border border-gray-900 shadow-sm text-sm font-medium rounded-md text-gray-400 bg-gray-800 hover:bg-gray-750"
               disabled={isSubmitting}
               onClick={async () => {
-                await loginWithGithub();
+                await oAuth2Login("Github");
               }}
             >
               <svg

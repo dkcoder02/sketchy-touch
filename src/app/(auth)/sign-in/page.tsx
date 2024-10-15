@@ -20,7 +20,7 @@ import { signInSchema } from "@/schemas/signInSchema";
 import toast from "react-hot-toast";
 
 export default function SignInPage() {
-  const { login, loginWithGithub } = useAuthStore();
+  const { login, oAuth2Login } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -140,6 +140,9 @@ export default function SignInPage() {
               variant="outline"
               className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               disabled={isSubmitting}
+              onClick={async () => {
+                await oAuth2Login("Google");
+              }}
             >
               <svg
                 className="h-5 w-5 mr-2"
@@ -173,7 +176,7 @@ export default function SignInPage() {
               className="w-full flex items-center justify-center px-4 py-2 border border-gray-900 shadow-sm text-sm font-medium rounded-md text-gray-400 bg-gray-800 hover:bg-gray-750"
               disabled={isSubmitting}
               onClick={async () => {
-                await loginWithGithub();
+                await oAuth2Login("Github");
               }}
             >
               <svg
