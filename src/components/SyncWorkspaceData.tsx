@@ -15,7 +15,6 @@ export default function SyncWorkspaceData(Props: Props) {
     try {
       setIsSyncing(true);
       const { workspaceData, ownerId } = Props;
-
       const response = await axios.patch("/api/update-drawing", {
         ownerId,
         drawings: workspaceData,

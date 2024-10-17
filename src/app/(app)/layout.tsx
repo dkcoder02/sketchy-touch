@@ -13,7 +13,7 @@ import { useDrawingStore } from "@/store/Canva";
 import toast from "react-hot-toast";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { session, user, logout } = useAuthStore();
+  const { session, user, logout, getCurrentUser } = useAuthStore();
   const { storeDrawings } = useDrawingStore()
   const router = useRouter();
 
@@ -26,7 +26,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
+    ; (async () => {
+      await getCurrentUser();
+    })();
   }, []);
+
 
   useEffect(() => {
     if (!session) {

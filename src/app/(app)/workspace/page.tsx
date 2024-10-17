@@ -41,7 +41,7 @@ export default function page() {
   return !isLoading ? (
     <>
       <div
-        style={{ height: "610px" }}
+        style={{ height: "643px" }}
         className="aspect-video w-full bg-accent dark:bg-gray-700 rounded-lg flex items-center justify-center"
       >
         <Excalidraw
@@ -51,6 +51,7 @@ export default function page() {
           }}
           onChange={(canvaData) => {
             if (canvaData?.length > 0) {
+              setWorkspaceData(canvaData);
               storeDrawings(JSON.stringify(canvaData));
             }
           }}

@@ -23,8 +23,6 @@ export const useDrawingStore = create<DrawingStore>()(
       },
 
       async storeDrawings(drawingData: any) {
-        console.log("drawingData", drawingData)
-        
         if (!drawingData) {
           set({ drawingData: null })
           return {

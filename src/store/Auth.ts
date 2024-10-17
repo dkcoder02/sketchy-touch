@@ -133,34 +133,22 @@ export const useAuthStore = create<IAuthStore>()(
       },
       async oAuth2Login(provider: string) {
         try {
-          const oAuth2Options = {
-            success: "http://localhost:3000/workspace",
-            error: "http://localhost:3000/error",
-            data: ["user"]
-          }
           if (provider === "Google") {
             await account.createOAuth2Session(
               OAuthProvider.Google,
-              oAuth2Options.success,
-              oAuth2Options.error,
-              oAuth2Options.data
+              "http://localhost:3000/workspace",
+              "http://localhost:3000/error"
             );
           }
 
           if (provider === "Github") {
             await account.createOAuth2Session(
               OAuthProvider.Github,
-              oAuth2Options.success,
-              oAuth2Options.error,
-              oAuth2Options.data
+              "http://localhost:3000/workspace",
+              "http://localhost:3000/error",
+              ["user"]
             );
           }
-          const session = await account.getSession("current");
-
-          const [user] = await Promise.all([account.get()]);
-
-          set({ session, user, jwt: session?.providerAccessToken });
-
           return { success: true };
         } catch (error) {
           console.log(error);

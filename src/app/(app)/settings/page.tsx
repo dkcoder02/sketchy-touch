@@ -40,7 +40,7 @@ import { useDrawingStore } from "@/store/Canva";
 import toast from "react-hot-toast";
 
 export default function SettingsPage() {
-  const { user, logout, updateCurrentUser } = useAuthStore();
+  const { user, logout, updateCurrentUser, session, deleteSession } = useAuthStore();
   const { storeDrawings } = useDrawingStore()
   const [isProfileSubmitting, setIsProfileSubmitting] = useState(false);
   const [isUpdatePasswordSubmitting, setIsUpdatePasswordSubmitting] =
@@ -129,6 +129,7 @@ export default function SettingsPage() {
         `/api/user/delete-my-account/${user?.$id}`
       );
 
+      await deleteSession(session?.$id)
       await storeDrawings(null);
       await logout();
 
