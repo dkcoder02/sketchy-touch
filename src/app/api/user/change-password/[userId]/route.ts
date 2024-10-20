@@ -35,7 +35,7 @@ export async function PATCH(
       );
     }
 
-    const isUpdatePassword = await users.updatePassword(userId, newPassword);
+    await users.updatePassword(userId, newPassword);
     return NextResponse.json(
       {
         message: "Password updated successfully",

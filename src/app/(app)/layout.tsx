@@ -1,18 +1,17 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Settings,
   LogOut,
 } from "lucide-react";
-import { Button, Avatar, AvatarFallback, DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut } from "@/components/ui/index";
+import { Button, Avatar, AvatarFallback, DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/index";
 import Link from "next/link";
 import { useAuthStore } from "@/store/Auth";
 import { useRouter } from "next/navigation";
 import { useDrawingStore } from "@/store/Canva";
 import toast from "react-hot-toast";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const { session, user, logout, getCurrentUser } = useAuthStore();
   const { storeDrawings } = useDrawingStore()
   const router = useRouter();
@@ -94,4 +93,4 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     </main>
   );
 };
-export default Layout;
+export default RootLayout;

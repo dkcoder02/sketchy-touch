@@ -77,7 +77,7 @@ export const useAuthStore = create<IAuthStore>()(
         try {
           set((state) => {
             for (const [key, value] of Object.entries(userObj)) {
-              state.user![key] = value;
+              (state.user as any)[key] = value;
             }
           });
         } catch (error) {
@@ -134,13 +134,13 @@ export const useAuthStore = create<IAuthStore>()(
       async oAuth2Login(provider: string) {
         try {
           if (provider === "Google") {
-            await account.createOAuth2Session(
+            const res = await account.createOAuth2Session(
               OAuthProvider.Google,
               "http://localhost:3000/workspace",
-              "http://localhost:3000/error"
+              "http://localhost:3000/error",
+              []
             );
           }
-
           if (provider === "Github") {
             await account.createOAuth2Session(
               OAuthProvider.Github,

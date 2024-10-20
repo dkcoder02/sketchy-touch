@@ -24,7 +24,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 import toast from "react-hot-toast";
 
 export default function SignUpPage() {
-  const { login, createAccount, oAuth2Login } = useAuthStore();
+  const { login, createAccount } = useAuthStore();
   const [username, setUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isUsernameChecking, setIsUsernameChecking] = useState(false);
@@ -190,6 +190,7 @@ export default function SignUpPage() {
           <div>
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               Sign up
@@ -197,7 +198,7 @@ export default function SignUpPage() {
           </div>
         </form>
       </Form>
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
@@ -269,7 +270,7 @@ export default function SignUpPage() {
             </Button>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="text-sm text-center mt-6">
         <span className="text-gray-300">Already got an account?</span>{" "}
         <Link

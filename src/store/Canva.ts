@@ -3,11 +3,11 @@ import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 
 interface DrawingStore {
-  drawingData: any;
+  drawingData: any | null;
   hydrated: boolean;
 
   setHydrated(): void;
-  storeDrawings(drawingData: any): Promise<{
+  storeDrawings(drawingData: any | null): Promise<{
     success: boolean;
   }>;
 }
@@ -22,7 +22,7 @@ export const useDrawingStore = create<DrawingStore>()(
         set({ hydrated: true });
       },
 
-      async storeDrawings(drawingData: any) {
+      async storeDrawings(drawingData: any | null) {
         if (!drawingData) {
           set({ drawingData: null })
           return {

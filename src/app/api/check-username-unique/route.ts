@@ -1,6 +1,6 @@
 import { userNameValidation } from "@/schemas/signUpSchema";
 import { z } from "zod";
-import { databases, users } from "@/models/server/config";
+import { users } from "@/models/server/config";
 import { Query } from "node-appwrite";
 
 const UsernameQuerySchema = z.object({

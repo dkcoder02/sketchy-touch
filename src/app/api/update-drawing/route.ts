@@ -8,7 +8,15 @@ export async function PATCH(request: Request) {
     const { ownerId, drawings } = await request.json();
 
     if (!drawings) {
-      throw new Error("Drawings are required");
+      return NextResponse.json(
+        {
+          message: "Drawings are required",
+          success: false,
+        },
+        {
+          status: 404,
+        }
+      );
     }
 
     const IsUserExist = await users.get(ownerId);

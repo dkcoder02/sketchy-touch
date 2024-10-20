@@ -4,7 +4,7 @@ const emailValidation = z.string().email({ message: "Invalid email address" });
 
 const passwordValidation = z
   .string()
-  .min(6, { message: "password must be at least 6 characters" });
+  .min(8, { message: "password must be at least 8 characters" });
 
 const signInSchema = z.object({
   email: emailValidation,

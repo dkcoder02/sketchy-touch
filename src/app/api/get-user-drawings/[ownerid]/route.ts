@@ -1,7 +1,7 @@
 import { dbId, drawingsCollectionId } from "@/models/name";
 import { databases, users } from "@/models/server/config";
 import { NextResponse } from "next/server";
-import { ID, Query } from "node-appwrite";
+import { Query } from "node-appwrite";
 
 export async function GET(
   request: Request,

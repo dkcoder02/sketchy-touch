@@ -14,12 +14,10 @@ import {
   Linkedin,
   ChevronRightIcon,
   CheckIcon,
-  UserPlus,
   Share2,
   Play,
   PenTool,
   GitBranch,
-  Palette,
 } from "lucide-react";
 import {
   Button,

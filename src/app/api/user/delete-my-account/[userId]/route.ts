@@ -33,7 +33,7 @@ export async function DELETE(
       ]
     );
 
-    if(isExistUserDrawing.total !== 0){
+    if (isExistUserDrawing.total !== 0) {
       const documentId = isExistUserDrawing.documents[0].$id;
       await databases.deleteDocument(
         dbId,

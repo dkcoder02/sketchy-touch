@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,6 +38,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useDrawingStore } from "@/store/Canva";
 import toast from "react-hot-toast";
+import { account } from "@/models/client/config";
 
 export default function SettingsPage() {
   const { user, logout, updateCurrentUser, session, deleteSession } = useAuthStore();
@@ -125,11 +126,17 @@ export default function SettingsPage() {
   const onDeleteAccount = async () => {
     setIsDeletingAccount(true);
     try {
+      if (!user || !session) return;
+
+      if (session.provider !== "email") {
+        await account.deleteIdentity(user.$id);
+      }
+
       const response = await axios.delete(
-        `/api/user/delete-my-account/${user?.$id}`
+        `/api/user/delete-my-account/${user.$id}`
       );
 
-      await deleteSession(session?.$id)
+      await deleteSession(session.$id)
       await storeDrawings(null);
       await logout();
 

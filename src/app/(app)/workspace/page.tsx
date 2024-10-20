@@ -1,19 +1,20 @@
-"use client";
-
+'use client';
 import React, { useState, useEffect } from "react";
-import {
-  Excalidraw,
-  THEME,
-} from "@excalidraw/excalidraw";
 import { useAuthStore } from "@/store/Auth";
 import { useDrawingStore } from "@/store/Canva";
 import axios from "axios";
-import SyncWorkspaceData from "@/components/SyncWorkspaceData";
 import ClipLoader from "react-spinners/ClipLoader";
+import dynamic from "next/dynamic";
+const ExcalidrawWithClientOnly = dynamic(
+  async () => (await import("../../../components/ExcalidrawWrapper")).default,
+  {
+    ssr: false,
+  },
+);
 
-export default function page() {
+export default function WorkspacePage() {
   const { user } = useAuthStore();
-  const { storeDrawings, drawingData } = useDrawingStore();
+  const { drawingData } = useDrawingStore();
   const [workspaceData, setWorkspaceData] = useState(JSON.parse(drawingData));
   const [isLoading, setLoading] = useState(false);
 
@@ -28,9 +29,7 @@ export default function page() {
     } catch (error) {
       console.log("fetchWorkspaceData => error", error);
     } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1200);
+      setLoading(false);
     }
   };
 
@@ -44,27 +43,7 @@ export default function page() {
         style={{ height: "643px" }}
         className="aspect-video w-full bg-accent dark:bg-gray-700 rounded-lg flex items-center justify-center"
       >
-        <Excalidraw
-          initialData={{
-            elements: workspaceData,
-            scrollToContent: true,
-          }}
-          onChange={(canvaData) => {
-            if (canvaData?.length > 0) {
-              setWorkspaceData(canvaData);
-              storeDrawings(JSON.stringify(canvaData));
-            }
-          }}
-          theme={THEME.DARK}
-          renderTopRightUI={() => (
-            <>
-              <SyncWorkspaceData
-                workspaceData={workspaceData}
-                ownerId={user?.$id}
-              />
-            </>
-          )}
-        />
+        <ExcalidrawWithClientOnly user={user} workspaceData={workspaceData} setWorkspaceData={setWorkspaceData} />
       </div>
     </>
   ) : (

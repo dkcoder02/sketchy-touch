@@ -20,7 +20,7 @@ import { signInSchema } from "@/schemas/signInSchema";
 import toast from "react-hot-toast";
 
 export default function SignInPage() {
-  const { login, oAuth2Login } = useAuthStore();
+  const { login } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -123,7 +123,7 @@ export default function SignInPage() {
           </div>
         </form>
       </Form>
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300" />
@@ -195,9 +195,9 @@ export default function SignInPage() {
             </Button>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="text-sm text-center mt-6">
-        <span className="text-gray-300">Don't have an account?</span>{" "}
+        <span className="text-gray-300">Don&#39;t have an account?</span>{" "}
         <Link
           href="/sign-up"
           className="font-medium text-[#ff7700] hover:underline"
