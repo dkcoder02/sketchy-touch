@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -91,7 +91,7 @@ export default function SettingsPage() {
 
       toast.success(response.data.message)
     } catch (error: any) {
-      console.error("Error Profile update::", error);
+      toast.error("Something went to wrong while update profile")
     } finally {
       setIsProfileSubmitting(false);
     }
@@ -117,7 +117,7 @@ export default function SettingsPage() {
 
       passwordForm.reset();
     } catch (error: any) {
-      console.error("Error Password update::", error);
+      toast.error("Something went to wrong while update password")
     } finally {
       setIsUpdatePasswordSubmitting(false);
     }
@@ -143,7 +143,7 @@ export default function SettingsPage() {
       router.push("/");
       toast.success(response.data.message);
     } catch (error: any) {
-      console.error("Error Delete account::", error);
+      toast.error("Something went to wrong while delete account")
     } finally {
       setIsDeletingAccount(false);
     }

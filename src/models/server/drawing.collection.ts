@@ -15,7 +15,6 @@ export default async function createDrawingsCollection() {
       Permission.delete("users"),
     ]
   );
-  console.log("Drawing collection is created");
 
   //creating attributes
 
@@ -35,5 +34,4 @@ export default async function createDrawingsCollection() {
       true
     ),
   ]);
-  console.log("Drawing Attributes created");
 }

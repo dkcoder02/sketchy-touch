@@ -11,7 +11,6 @@ export async function GET(
     const ownerId = params.ownerid;
 
     const IsUserExist = await users.get(ownerId);
-
     if (!IsUserExist) {
       return NextResponse.json(
         {
@@ -32,7 +31,6 @@ export async function GET(
         Query.equal("owner", ownerId),
       ]
     );
-
     const drawings = userDrawings.documents;
 
     if (drawings.length < 1) {

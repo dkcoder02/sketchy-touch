@@ -23,11 +23,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     router.push("/");
   };
 
+  const handleGetLoggedInUser = async () => {
+    await getCurrentUser();
+  };
+
   useEffect(() => {
     document.documentElement.classList.add("dark");
-    ; (async () => {
-      await getCurrentUser();
-    })();
+    handleGetLoggedInUser();
   }, []);
 
 

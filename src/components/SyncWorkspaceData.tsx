@@ -27,7 +27,7 @@ export default function SyncWorkspaceData(Props: Props) {
 
       toast.success("Data synced successfully");
     } catch (error) {
-      console.log("Syncing failed", error);
+      toast.error("Data synced failed");
     } finally {
       setIsSyncing(false);
     }

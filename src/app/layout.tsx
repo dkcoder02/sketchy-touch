@@ -36,7 +36,7 @@ export default function RootLayout({
           position="top-right"
           reverseOrder={false}
         />
-        <Analytics />;
+        <Analytics />
       </body>
     </html>
   );

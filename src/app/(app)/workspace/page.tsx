@@ -5,6 +5,7 @@ import { useDrawingStore } from "@/store/Canva";
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
 import dynamic from "next/dynamic";
+import toast from "react-hot-toast";
 const ExcalidrawWithClientOnly = dynamic(
   async () => (await import("../../../components/ExcalidrawWrapper")).default,
   {
@@ -26,8 +27,8 @@ export default function WorkspacePage() {
       if (response.data.status) {
         setWorkspaceData(JSON.parse(response.data.data.drawings));
       }
-    } catch (error) {
-      console.log("fetchWorkspaceData => error", error);
+    } catch (error: any) {
+      toast.error("Something went to wrong while fetching workspace data");
     } finally {
       setLoading(false);
     }

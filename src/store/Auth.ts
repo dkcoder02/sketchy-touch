@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
-
-import { AppwriteException, ID, Models, OAuthProvider } from "appwrite";
+import { AppwriteException, ID, Models } from "appwrite";
 import { account } from "@/models/client/config";
 
 interface IAuthStore {
@@ -19,10 +18,6 @@ interface IAuthStore {
     email: string,
     password: string
   ): Promise<{
-    success: boolean;
-    error?: AppwriteException | null;
-  }>;
-  oAuth2Login(provider: string): Promise<{
     success: boolean;
     error?: AppwriteException | null;
   }>;
@@ -55,34 +50,22 @@ export const useAuthStore = create<IAuthStore>()(
       },
 
       async verifySession() {
-        try {
-          const session = await account.getSession("current");
-          set({ session });
-        } catch (error) {
-          console.log("verifySession => error", error);
-        }
+        const session = await account.getSession("current");
+        set({ session });
       },
 
       async getCurrentUser() {
-        try {
-          const session = await account.getSession("current");
-          const [user] = await Promise.all([account.get()]);
-          set({ session, user, jwt: session?.providerAccessToken });
-        } catch (error) {
-          console.log("getCurrentUser => error", error);
-        }
+        const session = await account.getSession("current");
+        const [user] = await Promise.all([account.get()]);
+        set({ session, user, jwt: session?.providerAccessToken });
       },
 
       async updateCurrentUser(userObj: object) {
-        try {
-          set((state) => {
-            for (const [key, value] of Object.entries(userObj)) {
-              (state.user as any)[key] = value;
-            }
-          });
-        } catch (error) {
-          console.log("updateCurrentUser => error", error);
-        }
+        set((state) => {
+          for (const [key, value] of Object.entries(userObj)) {
+            (state.user as any)[key] = value;
+          }
+        });
       },
 
       async login(email: string, password: string) {
@@ -98,7 +81,6 @@ export const useAuthStore = create<IAuthStore>()(
           set({ session, user, jwt });
           return { success: true };
         } catch (error) {
-          console.log("login => error", error);
           return {
             success: false,
             error: error instanceof AppwriteException ? error : null,
@@ -111,7 +93,6 @@ export const useAuthStore = create<IAuthStore>()(
           await account.create(ID.unique(), email, password, name);
           return { success: true };
         } catch (error) {
-          console.log("createAccount => error", error);
           return {
             success: false,
             error: error instanceof AppwriteException ? error : null,
@@ -124,48 +105,15 @@ export const useAuthStore = create<IAuthStore>()(
 
           return { success: true };
         } catch (error) {
-          console.log("deleteSession => error", error);
           return {
             success: false,
             error: error instanceof AppwriteException ? error : null,
           };
         }
       },
-      async oAuth2Login(provider: string) {
-        try {
-          if (provider === "Google") {
-            const res = await account.createOAuth2Session(
-              OAuthProvider.Google,
-              "http://localhost:3000/workspace",
-              "http://localhost:3000/error",
-              []
-            );
-          }
-          if (provider === "Github") {
-            await account.createOAuth2Session(
-              OAuthProvider.Github,
-              "http://localhost:3000/workspace",
-              "http://localhost:3000/error",
-              ["user"]
-            );
-          }
-          return { success: true };
-        } catch (error) {
-          console.log(error);
-          return {
-            success: false,
-            error: error instanceof AppwriteException ? error : null,
-          };
-        }
-      },
-
       async logout() {
-        try {
-          set({ session: null, jwt: null, user: null });
-          await account.deleteSessions();
-        } catch (error) {
-          console.log(error);
-        }
+        set({ session: null, jwt: null, user: null });
+        await account.deleteSessions();
       },
     })),
     {

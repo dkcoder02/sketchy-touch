@@ -391,7 +391,7 @@ export default function Home() {
               ))}
             </div>
             <p className="mt-8 text-base text-[#ff7700] md:mt-0 md:order-1">
-              &copy; 2024 SketchyBoard, Inc. All rights reserved.
+              &copy; 2024-25 SketchyBoard, Inc. All rights reserved.
             </p>
           </div>
         </div>
