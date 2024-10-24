@@ -88,7 +88,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#f0f4f8] font-sans">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-gray-800 shadow-sm ">
+      <nav className="sticky top-0 z-50 bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex p-4 justify-between h-16">
             <div className="flex">
@@ -115,11 +115,11 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <header className="">
-        <div className=" min-h-screen py-16 px-4 flex  items-center justify-center sm:py-24 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+      <header className="bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+        <div className="min-h-screen py-16 px-4 flex items-center justify-center sm:py-24 sm:px-6 lg:px-8">
           <div className="text-center">
             <motion.h1
-              className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-white"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -166,18 +166,18 @@ export default function Home() {
       {/* Features */}
       <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-extrabold text-white text-center mb-12">Our <span className="text-orange-500">Features</span></h2>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white text-center mb-12">Our <span className="text-orange-500">Features</span></h2>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
               <Card key={index} className="bg-gray-800 border-gray-700 hover:bg-gray-700 transition-colors duration-300">
                 <CardHeader>
-                  <div className={`w-16 h-16 rounded-full ${feature.color} flex items-center justify-center mb-4`}>
+                  <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full ${feature.color} flex items-center justify-center mb-4`}>
                     <feature.icon className="w-6 h-6 text-primary-foreground" />
                   </div>
-                  <CardTitle className="text-xl font-semibold text-white">{feature.title}</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl font-semibold text-white">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-300">{feature.description}</p>
+                  <p className="text-sm sm:text-base text-gray-300">{feature.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -189,8 +189,8 @@ export default function Home() {
       <div className="bg-gray-950 py-16 sm:py-24">
         <section className="mb-24">
           <h2 className="text-center text-sm font-semibold text-white uppercase tracking-wide mb-2">HOW IT WORKS</h2>
-          <h3 className="text-center text-4xl font-bold mb-12 text-gray-400 ">Simplify your collaborative process</h3>
-          <div className="grid md:grid-cols-3   gap-8 m-8">
+          <h3 className="text-center text-2xl sm:text-3xl md:text-4xl font-bold mb-12 text-gray-400">Simplify your collaborative process</h3>
+          <div className="grid md:grid-cols-3 gap-8 m-4 sm:m-8">
             {[
               { number: 1, title: "Create a board", description: "Start with a blank canvas or choose from our templates.", icon: PenTool },
               { number: 2, title: "Invite your team", description: "Share your board and collaborate in real-time.", icon: Users },
@@ -199,14 +199,14 @@ export default function Home() {
               <Card key={index} className="bg-gray-900 border-gray-800 relative overflow-hidden group hover:shadow-lg transition-all duration-300">
                 <div className="absolute top-0 left-0 w-1 h-full bg-orange-500 transform origin-left scale-y-0 group-hover:scale-y-100 transition-transform duration-300"></div>
                 <CardHeader>
-                  <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mb-4 group-hover:bg-orange-400 group-hover:text-primary-foreground transition-colors duration-300">
-                    <span className="text-2xl font-bold">{step.number}</span>
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-full flex items-center justify-center mb-4 group-hover:bg-orange-400 group-hover:text-primary-foreground transition-colors duration-300">
+                    <span className="text-xl sm:text-2xl font-bold">{step.number}</span>
                   </div>
-                  <CardTitle className="text-white text-2xl">{step.title}</CardTitle>
+                  <CardTitle className="text-white text-lg sm:text-xl md:text-2xl">{step.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="text-gray-400">
-                  <CardDescription className="text-2xl">{step.description}</CardDescription>
-                  <step.icon className="mt-4 transition-colors duration-300" size={30} />
+                  <CardDescription className="text-base sm:text-lg md:text-xl">{step.description}</CardDescription>
+                  <step.icon className="mt-4 transition-colors duration-300" size={24} />
                 </CardContent>
               </Card>
             ))}
@@ -217,8 +217,8 @@ export default function Home() {
       {/* Use Cases */}
       <div className="bg-gray-900 text-gray-100 py-16 sm:py-24">
         <section className="py-16">
-          <div className="container mx-auto px-6">
-            <h2 className="text-center text-4xl sm:text-4xl font-extrabold text-orange-400 mb-12">
+          <div className="container mx-auto px-4 sm:px-6">
+            <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-extrabold text-orange-400 mb-12">
               Perfect for teams of all sizes
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -229,12 +229,12 @@ export default function Home() {
                 >
                   <CardHeader className="flex flex-row items-center space-x-2 justify-left">
                     <div className={`p-2 rounded-full ${feature.color} bg-opacity-20`}>
-                      <feature.icon className={`h-6 w-6 ${feature.color}`} />
+                      <feature.icon className={`h-5 w-5 sm:h-6 sm:w-6 ${feature.color}`} />
                     </div>
-                    <CardTitle className="text-white">{feature.title}</CardTitle>
+                    <CardTitle className="text-white text-base sm:text-lg">{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent className="text-center">
-                    <p className="text-gray-400">{feature.description}</p>
+                    <p className="text-gray-400 text-sm sm:text-base">{feature.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -259,7 +259,7 @@ export default function Home() {
                         <li key={item}>
                           <a
                             href="#"
-                            className="text-base text-gray-300 hover:text-white"
+                            className="text-sm sm:text-base text-gray-300 hover:text-white"
                           >
                             {item}
                           </a>
@@ -282,10 +282,11 @@ export default function Home() {
                       <li key={item}>
                         <a
                           href="#"
-                          className="text-base text-gray-300 hover:text-white"
+                          className="text-sm sm:text-base text-gray-300 hover:text-white"
                         >
                           {item}
                         </a>
+
                       </li>
                     ))}
                   </ul>
@@ -301,7 +302,7 @@ export default function Home() {
                       <li key={item}>
                         <a
                           href="#"
-                          className="text-base text-gray-300 hover:text-white"
+                          className="text-sm sm:text-base text-gray-300 hover:text-white"
                         >
                           {item}
                         </a>
@@ -319,7 +320,7 @@ export default function Home() {
                         <li key={item}>
                           <a
                             href="#"
-                            className="text-base text-gray-300 hover:text-white"
+                            className="text-sm sm:text-base text-gray-300 hover:text-white"
                           >
                             {item}
                           </a>
@@ -334,7 +335,7 @@ export default function Home() {
               <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
                 Subscribe to our newsletter
               </h3>
-              <p className="mt-4 text-base text-gray-300">
+              <p className="mt-4 text-sm sm:text-base text-gray-300">
                 Get the latest news and articles to your inbox every month.
               </p>
               <form className="mt-4 sm:flex sm:max-w-md">
@@ -386,11 +387,11 @@ export default function Home() {
                   className="text-gray-400 hover:text-gray-300"
                 >
                   <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-6 w-6" aria-hidden="true" />
+                  <item.icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
                 </a>
               ))}
             </div>
-            <p className="mt-8 text-base text-[#ff7700] md:mt-0 md:order-1">
+            <p className="mt-8 text-sm sm:text-base text-[#ff7700] md:mt-0 md:order-1">
               &copy; 2024-25 SketchyBoard, Inc. All rights reserved.
             </p>
           </div>

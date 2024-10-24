@@ -50,12 +50,12 @@ export default function SignUpPage() {
         `/api/check-username-unique?username=${username}`
       );
       setUsernameMessage(response.data.message);
-    } catch (error) {
+    } catch (error: any) {
       const axiosError = error as AxiosError<ApiResponse>;
       setUsernameMessage(
         axiosError.response?.data.message || "Error checking username"
       );
-      toast.error("Error checking username")
+      toast.error(axiosError.response?.data.message || "Error checking username")
     } finally {
       setIsUsernameChecking(false);
     }
