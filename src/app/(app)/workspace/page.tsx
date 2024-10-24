@@ -41,7 +41,7 @@ export default function WorkspacePage() {
   return !isLoading ? (
     <>
       <div
-        style={{ height: "643px" }}
+        style={{ height: "1000px" }}
         className="aspect-video w-full bg-accent dark:bg-gray-700 rounded-lg flex items-center justify-center"
       >
         <ExcalidrawWithClientOnly user={user} workspaceData={workspaceData} setWorkspaceData={setWorkspaceData} />
